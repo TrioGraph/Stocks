@@ -3,9 +3,10 @@ import { DataService } from '../data.service';
 import { FormGroup } from '@angular/forms';
 import * as exampleData from '../../assets/OpenAPIScripMaster1.json';
 @Component({
-  selector: 'app-stock',
-  templateUrl: './stock.component.html',
-  styleUrls: ['./stock.component.scss']
+    selector: 'app-stock',
+    templateUrl: './stock.component.html',
+    styleUrls: ['./stock.component.scss'],
+    standalone: false
 })
 export class StockComponent implements OnInit {
   stockForm!: FormGroup

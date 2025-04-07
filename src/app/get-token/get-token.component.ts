@@ -3,9 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../data.service';
 
 @Component({
-  selector: 'app-get-token',
-  templateUrl: './get-token.component.html',
-  styleUrls: ['./get-token.component.scss']
+    selector: 'app-get-token',
+    templateUrl: './get-token.component.html',
+    styleUrls: ['./get-token.component.scss'],
+    standalone: false
 })
 export class GetTokenComponent implements OnInit {
   getTokenForm!: FormGroup

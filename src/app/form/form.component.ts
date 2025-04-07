@@ -3,9 +3,10 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { data } from '../../assets/Stocks'
 import { DataService } from '../data.service';
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.scss'],
+    standalone: false
 })
 export class FormComponent implements OnInit {
   dynamicFormGroup!: FormGroup;  //defined the dynamicFormGroup
