@@ -1,0 +1,37 @@
+<div class="container">
+    <fieldset class="fieldset">
+        <legend>Stock</legend>
+        
+        Exchange Type
+        <mat-radio-group aria-label="Exchange Type" [(ngModel)]="selectedExchange">
+            <mat-radio-button value="NSE">NSE</mat-radio-button>
+            <mat-radio-button value="BSE">BSE</mat-radio-button>
+          </mat-radio-group>
+          Select Mode
+          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="bold">Bold</mat-button-toggle>
+            <mat-button-toggle value="italic">Italic</mat-button-toggle>
+            <mat-button-toggle value="underline">Underline</mat-button-toggle>
+          </mat-button-toggle-group>
+          
+        <mat-radio-group aria-label="Select Mode" [(ngModel)]="selectedMode">
+            <mat-radio-button value="LTP">LTP</mat-radio-button>
+            <mat-radio-button value="OHLC">OHLC</mat-radio-button>
+            <mat-radio-button value="FULL">Full</mat-radio-button>
+          </mat-radio-group>
+          
+          <!-- <mat-label>Stock</mat-label> -->
+          <mat-select (selectionChange)="onStockChange($event)">
+                <ng-container *ngFor="let stock of stockData">
+                    <mat-option [value]="stock">{{stock.name}}</mat-option>
+                </ng-container>
+          </mat-select>
+        <!-- <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button> -->
+<!-- </form> -->
+</fieldset>
+
+<fieldset class="fieldset">
+    <legend>Stock</legend>
+    <textarea class="result-text" >{{ result | json }}</textarea>
+    </fieldset>
+</div>

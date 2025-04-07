@@ -1,0 +1,17 @@
+<div class="container">
+    <fieldset class="fieldset">
+        <legend>Get Token</legend>
+<form class="formwidth" [formGroup]="getTokenForm">
+    <table class="fullwidth" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="fullwidth">
+                    <input matInput placeholder="Refresh Token" id="refreshToken" name="refreshToken" formControlName="refreshToken">
+                </mat-form-field>
+            </td>
+        </tr>
+    </table>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Get Token</button>
+</form>
+</fieldset>
+</div>

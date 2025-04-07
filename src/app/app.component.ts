@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  navclose: boolean = false;
   title = 'Stocks';
+
+  
+  toggleNavBar() {
+    this.navclose = !this.navclose;
+  }
+
+
 }

@@ -1,0 +1,17 @@
+<div class="container">
+    <fieldset class="fieldset">
+        <legend>Login</legend>
+<form class="formwidth" [formGroup]="loginForm">
+    <table class="fullwidth" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="fullwidth">
+                    <input matInput placeholder="TOTP" id="totp" name="totp" formControlName="totp">
+                </mat-form-field>
+            </td>
+        </tr>
+    </table>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Log In</button>
+</form>
+</fieldset>
+</div>

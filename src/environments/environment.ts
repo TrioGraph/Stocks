@@ -1,16 +1,38 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
   production: false
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+export const requestHeaders = {
+  'Authorization': 'Bearer AUTHORIZATION_TOKEN',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+  'X-UserType': 'USER',
+  'X-SourceID': 'WEB',
+  'X-ClientLocalIP': '192.168.1.5',
+  'X-ClientPublicIP': '202.62.75.10',
+  'X-MACAddress': '8C-C6-81-35-51-3E',
+  'X-PrivateKey': 'B6aPWRUQ'
+  }
+  
+  export const loginRequestHeaders = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'X-UserType': 'USER',
+    'X-SourceID': 'WEB',
+    'X-ClientLocalIP': '192.168.1.5',
+    'X-ClientPublicIP': '202.62.75.10',
+    'X-MACAddress': ' 8C-C6-81-35-51-3E',
+    'X-PrivateKey': 'B6aPWRUQ'
+    }
+
+export const loginRequestParameters = JSON.stringify({
+  "clientcode":"N242328",
+  "password":"0019",
+  "totp":"totp#"
+  });
+
+  export const getTokenRequestParameters = JSON.stringify({
+    "refreshToken":"refreshToken#"
+    });
+  
+
