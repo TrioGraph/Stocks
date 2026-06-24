@@ -11,7 +11,7 @@ export const requestHeaders = {
   'X-ClientLocalIP': '192.168.1.5',
   'X-ClientPublicIP': '202.62.75.10',
   'X-MACAddress': '8C-C6-81-35-51-3E',
-  'X-PrivateKey': 'B6aPWRUQ'
+  'X-PrivateKey': 'ppcdlxZW'
   }
   
   export const loginRequestHeaders = {
@@ -22,12 +22,12 @@ export const requestHeaders = {
     'X-ClientLocalIP': '192.168.1.5',
     'X-ClientPublicIP': '202.62.75.10',
     'X-MACAddress': ' 8C-C6-81-35-51-3E',
-    'X-PrivateKey': 'B6aPWRUQ'
+    'X-PrivateKey': 'ppcdlxZW'
     }
 
 export const loginRequestParameters = JSON.stringify({
   "clientcode":"N242328",
-  "password":"0019",
+  "password":"0926",
   "totp":"totp#"
   });
 

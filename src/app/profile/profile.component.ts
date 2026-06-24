@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
     selector: 'app-profile',
@@ -8,18 +9,33 @@ import { DataService } from '../data.service';
     standalone: false
 })
 export class ProfileComponent implements OnInit {
-
-  constructor(private dataService: DataService) { }
+  result: any;
+  constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
 
     // this.dataService.getProfile().subscribe((data: any) => {
     //   console.log(data);
     // });
+
+    this.dataService.getProfile().then((response) =>{
+      this.result = response;
+      console.log('response :', response);
+    // this.router.navigateByUrl("dashboard")
+    })
+    .catch((error: any) => {
+    // this.router.navigateByUrl("login")
+    });
   }
 
   onSubmit() {
-    this.dataService.getProfile();
+    // this.dataService.getProfile().then((response) =>{
+    //   this.result = response;
+    //   console.log('response :', response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
   }
 
 }

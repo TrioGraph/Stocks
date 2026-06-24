@@ -4,28 +4,29 @@
       <h1>Stocks</h1>
   </div>
   <ul>
-      <li [routerLink]="['/login']"><img src="Login (2).png" alt="">&nbsp; <span>Login</span> </li>
-      <li [routerLink]="['/getToken']"><img src="dashboard (2).png" alt="">&nbsp; <span>Get Token</span> </li>
-      <li [routerLink]="['/profile']"><img src="dashboard (2).png" alt="">&nbsp; <span>Profile</span> </li>
-      <li [routerLink]="['/stock']"><img src="dashboard (2).png" alt="">&nbsp; <span>Stock</span> </li>
-      <li [routerLink]="['/dashboard']"><img src="dashboard (2).png" alt="">&nbsp; <span>Dashboard</span> </li>
+      <li [routerLink]="['/login']"><span>Login</span> </li>
+      <!-- <li [routerLink]="['/getToken']"><span>Get Token</span> </li> -->
+      <li [routerLink]="['/profile']"><span>Profile</span> </li>
+      <li [routerLink]="['/dashboard']"><span>Dashboard</span> </li>
+      <li [routerLink]="['/stock']"><span>Stock</span> </li>
+      <li [routerLink]="['/historicalData']"><span>Historical Data</span> </li>
+      <li [routerLink]="['/files']"><span>Files</span> </li>
+      <li [routerLink]="['/options']"><span>Options</span> </li>
   </ul>
 </div>
 <div class="container">
-  <div class="header">
+  <!-- <div class="header">
       <div class="nav">
           <div class="search">
               <input type="text" placeholder="Search..">
               <button type="submit"><img src="search.png" alt=""></button>
           </div>
           <div class="user">
-              <a href="#" class="btn">Add New</a>
-              <img src="notifications.png" alt="">
               <div class="img-case">
                   <img src="user.png" alt="">
               </div>
           </div>
       </div>
-  </div>
+  </div> -->
 <router-outlet></router-outlet>
 </div>

@@ -148,9 +148,9 @@ td {
     }
 }
 @media screen and (max-width: 940px) {
-    .side-menu li span {
-        display: none;
-    }
+    // .side-menu li span {
+    //     display: none;
+    // }
     .side-menu {
         align-items: center;
     }
@@ -158,11 +158,11 @@ td {
         width: 40px;
         height: 40px;
     }
-    .side-menu li:hover {
-        background: #f05462;
-        padding: 8px 38px;
-        border: 2px solid white;
-    }
+    // .side-menu li:hover {
+    //     background: #f05462;
+    //     padding: 8px 38px;
+    //     border: 2px solid white;
+    // }
 }
 @media screen and (max-width:536px) {
     .brand-name h1 {

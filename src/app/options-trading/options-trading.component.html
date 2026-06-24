@@ -1,0 +1,58 @@
+<div class="options-trading">
+  <div class="radio-section">
+    <label>
+      <input 
+        type="radio" 
+        name="assetSelection" 
+        value="NIFTY" 
+        [checked]="selectedAsset === 'NIFTY'"
+        (change)="onAssetChange('NIFTY')">
+      {{ niftyRadioLabel }}
+    </label>
+
+    <label>
+      <input 
+        type="radio" 
+        name="assetSelection" 
+        value="SENSEX" 
+        [checked]="selectedAsset === 'SENSEX'"
+        (change)="onAssetChange('SENSEX')">
+      {{ sensexRadioLabel }}
+    </label>
+  </div>
+
+  <div class="workspace">
+    <div class="listbox-wrapper">
+      <select 
+        size="10" 
+        class="options-list" 
+        [(ngModel)]="selectedOption" 
+        (change)="onOptionSelected($event)">
+        <option *ngFor="let contract of optionChain" [ngValue]="contract">
+          {{ contract.displayText }}
+        </option>
+      </select>
+    </div>
+
+    <div class="control-panel">
+      <div class="field-group">
+        <label>LTP</label>
+        <input type="text" [(ngModel)]="selectedOptionLtpValue" readonly />
+      </div>
+
+      <div class="label-indicator">
+        {{ selectedOptionValueLabel }}
+      </div>
+
+      <div class="field-group">
+        <label>Quantity</label>
+        <input type="text" [(ngModel)]="quantityText" />
+      </div>
+
+      <button class="btn-action" (click)="onBuyClick()">Buy</button>
+
+      <div class="summary">
+        <p> {{summaryText}} </p>
+    </div>
+  </div>
+</div>

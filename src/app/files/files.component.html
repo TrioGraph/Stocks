@@ -1,0 +1,64 @@
+<p>
+  Select Stocks for monitoring
+</p>
+  <input type="text" matInput  class="text-input" placeholder="Search Stock" (keyup)="onKey($event)">
+<div class="container">
+  <ul>
+    <!-- [class.item-selected]="stock.selected" -->
+    <li *ngFor="let stock of list1" [class.item-selected]="stock.selected"
+      (click)="toggleSelection(stock, 1)"> {{stock.symbol}} -- {{ stock.name }} -- {{ stock.exch_seg}}</li>
+  </ul>
+  <div class="buttons-container">
+  <button kendoButton (click)="moveSelected('right')">
+    <i class="fa fa-arrow-right"></i>
+  </button>
+  <button kendoButton (click)="moveAll('right')">
+    <i class="fa fa-forward"></i>
+  </button>
+  <button kendoButton (click)="moveSelected('left')">
+    <i class="fa fa-arrow-left"></i>
+  </button>
+  <button kendoButton (click)="moveAll('left')">
+    <i class="fa fa-backward"></i>
+  </button>
+  </div>
+  <ul>
+    <li 
+      *ngFor="let stock of list2" 
+      [class.item-selected]="stock.selected"
+      (click)="toggleSelection(stock, 2)">{{stock.symbol}} -- {{ stock.name }} -- {{ stock.exch_seg}}</li>
+  </ul>
+</div>
+
+<div class="example-button-row button-panel">
+
+    From Date
+  <input type="datetime-local" [(ngModel)]="selectedFromDate" />
+  To Date
+  <input type="datetime-local" [(ngModel)]="selectedToDate" />
+
+  <br>
+<div class="flex-container">
+    <!-- <button matButton="outlined" class="form-btn" (click)="saveToFile()">Save</button> -->
+    <button class="my-button green-button" (click)="saveToFile()">Save</button>
+
+  <span class="label-style">
+  Select Interval
+  </span>
+  <mat-button-toggle-group name="fontStyle" aria-label="Mode" [(ngModel)]="selectedInterval">
+    <mat-button-toggle value="ONE_MINUTE">1 MINUTE</mat-button-toggle>
+    <mat-button-toggle value="THREE_MINUTE">3 MINUTE</mat-button-toggle>
+    <mat-button-toggle value="FIVE_MINUTE">5 MINUTE</mat-button-toggle>
+    <mat-button-toggle value="TEN_MINUTE">10 MINUTE</mat-button-toggle>
+    <mat-button-toggle value="FIFTEEN_MINUTE">15 MINUTE</mat-button-toggle>
+    <mat-button-toggle value="THIRTY_MINUTE">30 MINUTE</mat-button-toggle>
+    <mat-button-toggle value="ONE_HOUR">1 Hour</mat-button-toggle>
+    <mat-button-toggle value="ONE_DAY">1 Day</mat-button-toggle>
+  </mat-button-toggle-group>
+
+    <!-- <button matButton="outlined" class="form-btn" (click)="fetchStocksData()">Run</button> -->
+    <button class="my-button red-button" (click)="fetchStocksData()">Run</button>
+
+</div>
+
+  </div>

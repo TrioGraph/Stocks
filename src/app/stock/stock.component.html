@@ -1,37 +1,68 @@
 <div class="container">
-    <fieldset class="fieldset">
-        <legend>Stock</legend>
+    <!-- <fieldset class="fieldset"> -->
+        <!-- <legend>Stock</legend> -->
         
         Exchange Type
-        <mat-radio-group aria-label="Exchange Type" [(ngModel)]="selectedExchange">
+        <!-- <mat-radio-group aria-label="Exchange Type" [(ngModel)]="selectedExchange">
             <mat-radio-button value="NSE">NSE</mat-radio-button>
             <mat-radio-button value="BSE">BSE</mat-radio-button>
-          </mat-radio-group>
+          </mat-radio-group> -->
+
+          <mat-button-toggle-group name="fontStyle" aria-label="Exchange" [(ngModel)]="selectedExchange">
+            <mat-button-toggle value="NSE">NSE</mat-button-toggle>
+            <mat-button-toggle value="BSE">BSE</mat-button-toggle>
+          </mat-button-toggle-group>
+
           Select Mode
-          <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-            <mat-button-toggle value="bold">Bold</mat-button-toggle>
-            <mat-button-toggle value="italic">Italic</mat-button-toggle>
-            <mat-button-toggle value="underline">Underline</mat-button-toggle>
-          </mat-button-toggle-group> -->
+          <mat-button-toggle-group name="fontStyle" aria-label="Mode" [(ngModel)]="selectedMode">
+            <mat-button-toggle value="LTP">LTP</mat-button-toggle>
+            <mat-button-toggle value="OHLC">OHLC</mat-button-toggle>
+            <mat-button-toggle value="FULL">FULL</mat-button-toggle>
+          </mat-button-toggle-group>
           
-        <mat-radio-group aria-label="Select Mode" [(ngModel)]="selectedMode">
+        <!-- <mat-radio-group aria-label="Select Mode" [(ngModel)]="selectedMode">
             <mat-radio-button value="LTP">LTP</mat-radio-button>
             <mat-radio-button value="OHLC">OHLC</mat-radio-button>
             <mat-radio-button value="FULL">Full</mat-radio-button>
-          </mat-radio-group>
+          </mat-radio-group> -->
           
           <!-- <mat-label>Stock</mat-label> -->
-          <mat-select (selectionChange)="onStockChange($event)">
+          <!-- <mat-select (selectionChange)="onStockChange($event)">
                 <ng-container *ngFor="let stock of stockData">
                     <mat-option [value]="stock">{{stock.name}}</mat-option>
                 </ng-container>
+          </mat-select> -->
+          <!-- <cdk-virtual-scroll-viewport [itemSize]="20">
+
+          <mat-select (openedChange)="onStockChange($event)">
+            <input matInput class="text-box" (keyup)="onKey($event)"> -->
+
+            <!-- <cdk-virtual-scroll-viewport [itemSize]=dropDownHeight minBufferPx="200" maxBufferPx="400" 
+                class="example-viewport-select"> 
+              <mat-option *cdkVirtualFor="let item of stocksData" [value]="item"
+                (onSelectionChange)="onStockChange($event)">{{item}}</mat-option>
+             </cdk-virtual-scroll-viewport> -->
+
+            
+            <!-- @for (stock of stocksData; track stock) {
+              <mat-option *cdkVirtualFor="let stock of stocksData" [value]="stock.token" (onchange)="onStockChange($event)">{{stock.symbol}}</mat-option>
+            }
           </mat-select>
+          </cdk-virtual-scroll-viewport> -->
         <!-- <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button> -->
 <!-- </form> -->
-</fieldset>
+<!-- </fieldset> -->
 
-<fieldset class="fieldset">
-    <legend>Stock</legend>
-    <textarea class="result-text" >{{ result | json }}</textarea>
-    </fieldset>
+<mat-select
+		placeholder="Select">
+    <input matInput type="text" class="search-input" (keyup)="onKey($event)">
+		<cdk-virtual-scroll-viewport itemSize="50" [style.height.px]=5*48>
+			<mat-option *cdkVirtualFor="let stock of stocksData" [value]="stock"
+      (onSelectionChange)="onStockChange($event)">{{stock.symbol}} -- {{ stock.name }} -- {{ stock.exch_seg }}</mat-option>
+		</cdk-virtual-scroll-viewport>
+	</mat-select>
+<!-- <fieldset class="fieldset"> -->
+    <!-- <legend>Stock</legend> -->
+    <textarea class="result-text" rows="20">{{ result | json }}</textarea>
+    <!-- </fieldset> -->
 </div>

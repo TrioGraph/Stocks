@@ -1,7 +1,7 @@
 <div class="container">
     <fieldset class="fieldset">
         <legend>Profile</legend>
-        <button mat-raised-button color="primary" (click)="onSubmit()">Profile</button>
+        <!-- <button mat-raised-button color="primary" (click)="onSubmit()">Profile</button> -->
 <!-- 
 <form class="formwidth" [formGroup]="profileForm">
     <table class="fullwidth" cellspacing="0">
@@ -15,5 +15,8 @@
     </table>
         <button mat-raised-button color="primary" (click)="onSubmit()">Log In</button>
 </form> -->
+
+<textarea class="result-text" rows="20">{{ result | json }}</textarea>
+
 </fieldset>
 </div>

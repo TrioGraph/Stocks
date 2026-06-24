@@ -10,10 +10,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log('Interceptor :: ');
-    
       let token =  localStorage.getItem('jwtToken');
-      console.log('token :: ', token);
       if(token) {
       request = request.clone({
         setHeaders: { Authorization: `Bearer ${token}` },

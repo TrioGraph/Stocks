@@ -1,0 +1,82 @@
+<div class="container">
+    Exchange Type
+      <mat-button-toggle-group name="fontStyle" aria-label="Exchange" [(ngModel)]="selectedExchange">
+        <mat-button-toggle value="NSE">NSE</mat-button-toggle>
+        <mat-button-toggle value="BSE">BSE</mat-button-toggle>
+      </mat-button-toggle-group>
+
+ 
+      Stock
+      <mat-select (selectionChange)="onStockChange($event)" class="stock-dropdown">
+        @for (stock of stockData; track stock) {
+          <mat-option [value]="stock.token">{{stock.name | json}}</mat-option>
+        }
+      </mat-select>
+
+ From Date
+ <input type="date" [(ngModel)]="selectedFromDate"/>
+ To Date
+ <input type="date" [(ngModel)]="selectedToDate"/>
+
+ <br>
+      <!-- <ul style="display: inline-block">
+        <li *ngFor="let category of categoriesKeys" (click)="categorySelected(category)"> {{ category }}</li>
+      </ul> -->
+
+      <div *ngFor="let item of categoriesKeys">
+        <a class="selected"  (click)="categorySelected(item)">{{item}}</a>
+      </div>
+
+ <br>
+
+      Select Interval
+      <mat-button-toggle-group name="fontStyle" aria-label="Mode" [(ngModel)]="selectedInterval">
+        <mat-button-toggle value="ONE_MINUTE">1 MINUTE</mat-button-toggle>
+        <mat-button-toggle value="THREE_MINUTE">3 MINUTE</mat-button-toggle>
+        <mat-button-toggle value="FIVE_MINUTE">5 MINUTE</mat-button-toggle>
+        <mat-button-toggle value="TEN_MINUTE">10 MINUTE</mat-button-toggle>
+        <mat-button-toggle value="FIFTEEN_MINUTE">15 MINUTE</mat-button-toggle>
+        <mat-button-toggle value="THIRTY_MINUTE">30 MINUTE</mat-button-toggle>
+        <mat-button-toggle value="ONE_HOUR">1 Hour</mat-button-toggle>
+        <mat-button-toggle value="ONE_DAY">1 Day</mat-button-toggle>
+      </mat-button-toggle-group>
+      
+      <input type="button" (click)="onSubmit()" value="Submit" class="submit-btn" />
+      <input type="button" (click)="export()" value="Export" class="submit-btn" />
+      <br>
+
+      <div class="table-wrapper">
+
+        <cdk-virtual-scroll-viewport [itemSize]="20">
+<table class="fl-table">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Open</th>
+        <th>High</th>
+        <th>Low</th>
+        <th>Close</th>
+        <th>Volume</th>
+        <th>Change</th>
+        <th>Change %</th>
+    </tr>
+</thead>
+<tbody>
+    <tr *cdkVirtualFor="let rec of result">
+        <td>{{ rec[0] }}</td>
+        <td>{{ rec[1] }}</td>
+        <td>{{ rec[2] }}</td>
+        <td>{{ rec[3] }}</td>
+        <td>{{ rec[4] }}</td>
+        <td>{{ rec[5] }}</td>
+        <td>{{ rec[6] }}</td>
+        <td>{{ rec[7] }}</td>
+    </tr>
+</tbody>
+</table>
+</cdk-virtual-scroll-viewport>
+
+
+<div id="table-container"></div>
+</div>
+</div>
