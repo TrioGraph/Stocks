@@ -26,7 +26,7 @@ export const requestHeaders = {
     }
 export const loginRequestParameters = JSON.stringify({
   "clientcode":"N242328",
-  "password":"0019",
+  "password":"0926",
   "totp":"totp#"
   });
 
