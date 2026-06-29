@@ -137,7 +137,6 @@ export class OptionsTradingComponent implements OnInit {
     // Executes dynamic API data fetch block on choice changes
     this.optionsService.getLTPData(this.selectedOption.exchange, this.selectedOption.token, this.selectedOption.symbol)
       .then((res: any) => {
-        console.log('Fetched LTP data:', res);
         console.log('LTP value:', res?.data?.data?.ltp);
           this.selectedOptionLtpValue = Number(res?.data?.data?.ltp || 0);
           this.summaryText = `Selected Option: ${this.selectedOption?.displayText}, LTP: ${this.selectedOptionLtpValue}`;
@@ -178,6 +177,7 @@ export class OptionsTradingComponent implements OnInit {
     this.optionsService.placeOrder(sampleOrder).then( (res: any) => {
         alert('Order response received successfully!');
         console.log(res);
+        console.log('res data:', res?.data);
         this.summaryText = `Order placed: ${res?.data?.orderid || 'Unknown ID'}`;
       },
       (err: any) => {

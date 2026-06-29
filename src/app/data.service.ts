@@ -45,6 +45,8 @@ export class DataService {
   }
 
   getToken() {
+    console.log('this.JwtToken:', this.JwtToken);
+    console.log('this.RefreshToken:', this.RefreshToken);
     var config = {
       method: 'post',
       url: 'https://apiconnect.angelone.in/rest/auth/angelbroking/jwt/v1/generateTokens',
