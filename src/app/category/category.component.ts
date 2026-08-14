@@ -59,18 +59,20 @@ formatDate(date: Date) {
   getData() {
     this.dataService.getHistoricalStockDetails(this.selectedExchange, this.selectedStock, this.selectedInterval,
       this.formatDate(new Date(this.selectedFromDate)), this.formatDate(new Date(this.selectedToDate)) )
-    .then( (response) => {
-      this.result =  response.data.data;
-      let previousClosedValue = 0;
-      this.result.forEach((el: any) => {
-        el[el.length] = el[4] - previousClosedValue; 
-        el[el.length] = ((el[4] - previousClosedValue)/previousClosedValue) * 100; 
-        previousClosedValue = el[4];
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    .subscribe(
+      (response: any) => {
+        this.result = response.data;
+        let previousClosedValue = 0;
+        this.result.forEach((el: any) => {
+          el[el.length] = el[4] - previousClosedValue;
+          el[el.length] = ((el[4] - previousClosedValue) / previousClosedValue) * 100;
+          previousClosedValue = el[4];
+        });
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
   onStockChange(event: any) {
     this.selectedStock = event.value;
@@ -125,12 +127,14 @@ categorySelected(event: any) {
     });
 
      this.dataService.getStockDetailsByMode("LTP",this.selectedExchange, tempStockToken, tempStock)
-     .then(function (response) {
-      console.log('response :', response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+     .subscribe(
+       (response: any) => {
+         console.log('response :', response);
+       },
+       (error: any) => {
+         console.log(error);
+       }
+     );
   });
 
 }

@@ -111,20 +111,21 @@ export class FilesComponent implements OnInit {
           this.selectedInterval, 
           this.formatDate(this.selectedFromDate), 
           this.formatDate(this.selectedToDate))
-          .then((response) => {
-        let tempResult = response.data.data;
-        let previousClosedValue = 0;
-        tempResult.forEach((el: any) => {
-          el[el.length] = el[4] - previousClosedValue;
-          el[el.length] =
-            ((el[4] - previousClosedValue) / previousClosedValue) * 100;
-          previousClosedValue = el[4];
-        });
-        this.exportToCSV(element.token, tempResult);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+          .subscribe(
+            (response: any) => {
+              let tempResult = response.data;
+              let previousClosedValue = 0;
+              tempResult.forEach((el: any) => {
+                el[el.length] = el[4] - previousClosedValue;
+                el[el.length] = ((el[4] - previousClosedValue) / previousClosedValue) * 100;
+                previousClosedValue = el[4];
+              });
+              this.exportToCSV(element.token, tempResult);
+            },
+            (error: any) => {
+              console.log(error);
+            }
+          );
     // });
       });
     });

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AnyObject } from 'chart.js/dist/types/basic';
+// import { AnyObject } from 'chart.js/dist/types/basic';
 import { DataService, OptionContract, OrderInfo } from '../data.service';
 
 @Component({
@@ -63,7 +63,7 @@ export class OptionsTradingComponent implements OnInit {
   private async getTokenOptions(targetAsset: string, targetExpiry: string, exchSeg: string): Promise<void> {
     let instruments: any[] = []; 
     this.optionsService.getStocksLists('').subscribe(result => {
-     instruments = result;
+      instruments = result;
      console.log('Fetched instruments:', instruments);
 
     // 2. Filter for Target Options Chain
@@ -95,16 +95,17 @@ export class OptionsTradingComponent implements OnInit {
     // 3. Fetch Live Spot Price
     const targetAssetDetails = instruments.find(ins => ins.name === targetAsset);
     if (targetAssetDetails) {
-      this.optionsService.getLTPData(targetAssetDetails.exch_seg, targetAssetDetails.token, targetAsset).then(
-         (response: any) => {
-          const spotPrice = response?.data?.ltp || 0;
-          this.calculateMoneyness(spotPrice);
-        },
-        (error: any) => {
-          console.error('Error fetching spot price:', error);
-          alert('Failed to fetch live spot price for the selected asset.');
-        }
-      );
+      this.optionsService.getLTPData(targetAssetDetails.exch_seg, targetAssetDetails.token, targetAsset)
+        .subscribe(
+          (response: any) => {
+            const spotPrice = response?.ltp || response?.data?.ltp || 0;
+            this.calculateMoneyness(spotPrice);
+          },
+          (error: any) => {
+            console.error('Error fetching spot price:', error);
+            alert('Failed to fetch live spot price for the selected asset.');
+          }
+        );
     }
     }); // Simulating StocksHelper.StocksList
 
@@ -135,10 +136,12 @@ export class OptionsTradingComponent implements OnInit {
     this.quantityText = '65';
 
     // Executes dynamic API data fetch block on choice changes
-    this.optionsService.getLTPData(this.selectedOption.exchange, this.selectedOption.token, this.selectedOption.symbol)
-      .then((res: any) => {
-        console.log('LTP value:', res?.data?.data?.ltp);
-          this.selectedOptionLtpValue = Number(res?.data?.data?.ltp || 0);
+    this.optionsService
+      .getLTPData(this.selectedOption.exchange, this.selectedOption.token, this.selectedOption.symbol)
+      .subscribe(
+        (res: any) => {
+          console.log('LTP value:', res?.ltp || res?.data?.ltp || 0);
+          this.selectedOptionLtpValue = Number(res?.ltp || res?.data?.ltp || 0);
           this.summaryText = `Selected Option: ${this.selectedOption?.displayText}, LTP: ${this.selectedOptionLtpValue}`;
         },
         (err: any) => {
@@ -174,14 +177,16 @@ export class OptionsTradingComponent implements OnInit {
       ordertag: 'AlgoOrder01'
     };
 
-    this.optionsService.placeOrder(sampleOrder).then( (res: any) => {
+    this.optionsService.placeOrder(sampleOrder).subscribe(
+      (res: any) => {
         alert('Order response received successfully!');
         console.log(res);
-        console.log('res data:', res?.data);
-        this.summaryText = `Order placed: ${res?.data?.orderid || 'Unknown ID'}`;
+        console.log('res data:', res?.data ?? res);
+        this.summaryText = `Order placed: ${res?.orderid || res?.data?.orderid || 'Unknown ID'}`;
       },
       (err: any) => {
-        alert(`Failed to execute order: ${err['message '] || 'Unknown error'}`);
+        console.log(err);
+        alert(`Failed to execute order: ${err}|| 'Unknown error'}`);
       }
     );
   }

@@ -9,7 +9,9 @@ export const requestHeaders = {
   'X-UserType': 'USER',
   'X-SourceID': 'WEB',
   'X-ClientLocalIP': '192.168.1.5',
-  'X-ClientPublicIP': '202.62.75.10',
+  'X-ClientPublicIP': '48.45.73.239',
+  // 'X-ClientPublicIP': '122.174.154.168',
+  // 'X-ClientPublicIP': '202.62.75.10',
   'X-MACAddress': ' 8C-C6-81-35-51-3E',
   'X-PrivateKey': 'ppcdlxZW'
   }
@@ -20,7 +22,9 @@ export const requestHeaders = {
     'X-UserType': 'USER',
     'X-SourceID': 'WEB',
     'X-ClientLocalIP': '192.168.1.5',
-    'X-ClientPublicIP': '202.62.75.10',
+    'X-ClientPublicIP': '48.45.73.239',
+    // 'X-ClientPublicIP': '122.174.154.168',
+    // 'X-ClientPublicIP': '202.62.75.10',
     'X-MACAddress': ' 8C-C6-81-35-51-3E',
     'X-PrivateKey': 'ppcdlxZW'
     }

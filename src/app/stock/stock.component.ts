@@ -92,12 +92,16 @@ export class StockComponent implements OnInit, AfterViewInit {
         event.source.value.token,
         event.source.value.name
       )
-      .then((response) => {
-        this.result = response.data.data.fetched[0];
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .subscribe(
+        (response: any) => {
+          const fetched = response?.data?.data?.fetched ?? response?.data?.fetched ?? response?.fetched;
+          this.result = fetched ? fetched[0] : undefined;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+      
   }
 
   onKey(event: any) {

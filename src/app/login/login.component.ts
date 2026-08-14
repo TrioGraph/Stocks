@@ -23,51 +23,39 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.warn(this.loginForm.value);
-    this.dataService.userLogin(this.loginForm.value.totp).then((response: any) => {
-      console.log('Login successful:', response.data);
-      console.log('response.data.data.jwtToken:', response.data.data.jwtToken);
-      this.dataService.JwtToken = response.data.data.jwtToken;
-      this.dataService.RefreshToken = response.data.data.refreshToken;
-      this.dataService.FeedToken = response.data.data.feedToken;
-            localStorage.setItem('jwtToken', response.data.data.jwtToken);
-            localStorage.setItem('refreshToken', response.data.data.refreshToken);
-            localStorage.setItem('feedToken', response.data.data.feedToken);
-            this.getToken();
-          })
-          .catch((error: any) => {
-            console.log(error);
-            alert("Login Failed: Invalid Totp ");
-            // this.dialog.open(DialogOverviewExampleDialog,{
-            //   data: {message: "Login Failed: Invalid Totp "},
-            // });
-          });
+    this.dataService.userLogin(this.loginForm.value.totp).subscribe(
+      (response: any) => {
+        console.log('Login successful:', response);
+        this.dataService.JwtToken = response.data?.jwtToken ?? '';
+        this.dataService.RefreshToken = response.data?.refreshToken ?? '';
+        this.dataService.FeedToken = response.data?.feedToken ?? '';
+        localStorage.setItem('jwtToken', this.dataService.JwtToken);
+        localStorage.setItem('refreshToken', this.dataService.RefreshToken);
+        localStorage.setItem('feedToken', this.dataService.FeedToken);
+        this.getToken();
+      },
+      (error: any) => {
+        console.log(error);
+        alert('Login Failed: Invalid Totp ');
+      }
+    );
   }
 
   getToken() {
-    this.dataService.getToken().then((response: any) => {
-      this.dataService.JwtToken = response.data.data.jwtToken;
-      this.dataService.RefreshToken = response.data.data.refreshToken;
-      this.dataService.FeedToken = response.data.data.feedToken;
-
-      // localStorage.setItem('jwtToken', response.data.data.jwtToken);
-      // localStorage.setItem('refreshToken', response.data.data.refreshToken);
-      // localStorage.setItem('feedToken', response.data.data.feedToken);
-      
-      alert("Login Sucessfully and Token generated ");
-      alert(response.data.data.jwtToken);
-      this.showToken = true;
-      // this.dialog.open(DialogOverviewExampleDialog,{
-      //   data: {message: "Login Sucessfully and Token generated"},
-      // });
-    })
-    .catch((error: any) => {
-      console.log(error);
-      // this.dialog.open(DialogOverviewExampleDialog,{
-      //   data: {message: "Failed Token generated"},
-      // });
-      alert("Failed Token generated ");
-
-    });
+    this.dataService.getToken().subscribe(
+      (response: any) => {
+        this.dataService.JwtToken = response.data?.jwtToken ?? '';
+        this.dataService.RefreshToken = response.data?.refreshToken ?? '';
+        this.dataService.FeedToken = response.data?.feedToken ?? '';
+        alert('Login Sucessfully and Token generated ');
+        alert(this.dataService.JwtToken);
+        this.showToken = true;
+      },
+      (error: any) => {
+        console.log(error);
+        alert('Failed Token generated ');
+      }
+    );
   }
 
 }

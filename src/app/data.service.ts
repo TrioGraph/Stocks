@@ -7,7 +7,7 @@ import {
   loginRequestParameters,
   getTokenRequestParameters,
 } from '../environments/environment';
-import axios from 'axios';
+ 
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +25,15 @@ export class DataService {
   FeedToken: any;
   constructor(private http: HttpClient) {}
 
+  private buildHeaders(template: any): HttpHeaders {
+    const headersObj: any = { ...template };
+    if (headersObj.Authorization && headersObj.Authorization.indexOf('AUTHORIZATION_TOKEN') >= 0) {
+      const token = this.JwtToken ?? String(localStorage.getItem('jwtToken')) ?? '';
+      headersObj.Authorization = headersObj.Authorization.replace('AUTHORIZATION_TOKEN', token);
+    }
+    return new HttpHeaders(headersObj);
+  }
+
   getStocksLists(searchText: any): Observable<any[]> {
     // if (this.stocksList) {
     //   return this.stocksList;
@@ -34,68 +43,27 @@ export class DataService {
   }
 
   userLogin(totp: any) {
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/auth/angelbroking/user/v1/loginByPassword',
-      headers: loginRequestHeaders,
-      data: loginRequestParameters,
-    };
-    config.data = config.data.replace('totp#', totp);
-    return axios(config);
+    const payload = JSON.parse(loginRequestParameters);
+    payload.totp = payload.totp?.replace('totp#', totp) || totp;
+    const headers = this.buildHeaders(loginRequestHeaders);
+    return this.http.post<any>('/api/login', payload, { headers });
   }
 
   getToken() {
     console.log('this.JwtToken:', this.JwtToken);
     console.log('this.RefreshToken:', this.RefreshToken);
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/auth/angelbroking/jwt/v1/generateTokens',
-      headers: requestHeaders,
-      data: getTokenRequestParameters,
-    };
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      this.JwtToken
-      // String(localStorage.getItem('jwtToken'))
-      
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      this.RefreshToken
-      // String(localStorage.getItem('refreshToken'))
-    );
-    return axios(config);
+    const payload = JSON.parse(getTokenRequestParameters);
+    payload.refreshToken = this.RefreshToken ?? String(localStorage.getItem('refreshToken')) ?? payload.refreshToken;
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.post<any>('/api/generateTokens', payload, { headers });
   }
 
   getProfile() {
-    var config = {
-      method: 'get',
-      url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/user/v1/getProfile',
-      headers: requestHeaders,
-      data: getTokenRequestParameters,
-    };
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      String(localStorage.getItem('jwtToken'))
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      String(localStorage.getItem('refreshToken'))
-    );
-    return axios(config);
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.get<any>('/api/getProfile', { headers });
   }
 
   getStockDetails(exchange: any, token: any, tradingsymbol: any) {
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/order/v1/getLtpData',
-      headers: requestHeaders,
-      data: JSON.stringify({
-        exchange: exchange,
-        tradingsymbol: tradingsymbol,
-        symboltoken: token,
-      }),
-    };
     // var config = {
     //   method: 'post',
     //   url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/order/v1/getLtpData',
@@ -106,40 +74,16 @@ export class DataService {
     //     "symboltoken":"3045"
     // }),
     // };
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      String(localStorage.getItem('jwtToken'))
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      String(localStorage.getItem('refreshToken'))
-    );
-    return axios(config);
+    const payload = { exchange, tradingsymbol, symboltoken: token };
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.post<any>('/api/getLtpData', payload, { headers });
   }
 
   getStockDetailsByMode(mode: any, exchange: any, token: any, name: any) {
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/market/v1/quote/',
-      headers: requestHeaders,
-      data: JSON.stringify({
-        mode: mode,
-        exchangeTokens: {
-          exchangeType: [token],
-        },
-      }),
-    };
-
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      String(localStorage.getItem('jwtToken'))
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      String(localStorage.getItem('refreshToken'))
-    );
-    config.data = config.data.replace('exchangeType', exchange);
-    return axios(config);
+    const payload: any = { mode, exchangeTokens: {} };
+    payload.exchangeTokens[exchange] = [token];
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.post<any>('/api/quote', payload, { headers });
   }
 
   getHistoricalStockDetails(
@@ -149,27 +93,9 @@ export class DataService {
     fromDate: any,
     toDate: any
   ) {
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/historical/v1/getCandleData',
-      headers: requestHeaders,
-      data: JSON.stringify({
-        exchange: exchange,
-        symboltoken: token,
-        interval: interval,
-        fromdate: fromDate,
-        todate: toDate,
-      }),
-    };
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      String(localStorage.getItem('jwtToken'))
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      String(localStorage.getItem('refreshToken'))
-    );
-    return axios(config);
+    const payload = { exchange, symboltoken: token, interval, fromdate: fromDate, todate: toDate };
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.post<any>('/api/getCandleData', payload, { headers });
   }
 
   getCategoriesList() {
@@ -178,12 +104,12 @@ export class DataService {
   }
 
     getSavedStocks(): Observable<any> {
-    return this.http.get("https://triograph.com/fileapi/api.php");
+    return this.http.get('/api/fileapi');
   }
 
   saveToFile(data: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post("https://triograph.com/fileapi/api.php", 
+    return this.http.post('/api/fileapi', 
       data, { headers });
   }
 
@@ -242,27 +168,9 @@ export class DataService {
     // const payload = { exchange, symboltoken: token, tradingsymbol: symbol };
     // return this.http.post<any>(`${this.apiUrl}ltp`, payload);
 
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/order/v1/getLtpData/',
-      headers: requestHeaders,
-      data: JSON.stringify({
-        exchange: exchange,
-        tradingsymbol: symbol,
-        symboltoken: token
-      }),
-    };
-
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      String(localStorage.getItem('jwtToken'))
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      String(localStorage.getItem('refreshToken'))
-    );
-    config.data = config.data.replace('exchangeType', exchange);
-    return axios(config);
+    const payload = { exchange, tradingsymbol: symbol, symboltoken: token };
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.post<any>('/api/getLtpData', payload, { headers });
   }
 
   // Replaces smartApi.placeOrder
@@ -272,23 +180,8 @@ export class DataService {
     // const payload = { exchange, symboltoken: token, tradingsymbol: symbol };
     // return this.http.post<any>(`${this.apiUrl}ltp`, payload);
 
-    var config = {
-      method: 'post',
-      url: 'https://apiconnect.angelone.in/rest/secure/angelbroking/order/v1/placeorder/',
-      headers: requestHeaders,
-      data: JSON.stringify(order),
-    };
-
-    config.headers.Authorization = config.headers.Authorization.replace(
-      'AUTHORIZATION_TOKEN',
-      String(localStorage.getItem('jwtToken'))
-    );
-    config.data = config.data.replace(
-      'refreshToken#',
-      String(localStorage.getItem('refreshToken'))
-    );
-    config.data = config.data.replace('exchangeType', order.exchange);
-    return axios(config);
+    const headers = this.buildHeaders(requestHeaders);
+    return this.http.post<any>('/api/placeorder', order, { headers });
 
   }
 

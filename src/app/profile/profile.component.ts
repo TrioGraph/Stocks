@@ -18,14 +18,15 @@ export class ProfileComponent implements OnInit {
     //   console.log(data);
     // });
 
-    this.dataService.getProfile().then((response) =>{
-      this.result = response;
-      console.log('response :', response);
-    // this.router.navigateByUrl("dashboard")
-    })
-    .catch((error: any) => {
-    // this.router.navigateByUrl("login")
-    });
+    this.dataService.getProfile().subscribe(
+      (response: any) => {
+        this.result = response;
+        console.log('response :', response);
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   onSubmit() {
