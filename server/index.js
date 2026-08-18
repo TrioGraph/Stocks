@@ -3,7 +3,32 @@ const axios = require('axios');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+const allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://localhost:3000'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Accept',
+    'X-UserType',
+    'X-SourceID',
+    'X-ClientLocalIP',
+    'X-ClientPublicIP',
+    'X-MACAddress',
+    'X-PrivateKey',
+  ],
+}));
+app.options('*', cors());
 app.use(express.json());
 
 function buildForwardHeaders(req) {

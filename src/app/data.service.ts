@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of,catchError, filter, map, Subject } from 'rxjs';
 import {
+  environment,
   requestHeaders,
   loginRequestHeaders,
   loginRequestParameters,
@@ -20,10 +21,17 @@ export class DataService {
   };
   stocksList!: Observable<any[]>;
   orderApiUrl = 'https://apiconnect.angelone.in/rest/secure/angelbroking/order/v1/';
+  readonly apiBaseUrl = environment.apiBaseUrl;
   JwtToken: any;
   RefreshToken: any;
   FeedToken: any;
   constructor(private http: HttpClient) {}
+
+  private buildUrl(path: string): string {
+    const baseUrl = (this.apiBaseUrl || '').replace(/\/+$/, '');
+    const route = path.startsWith('/') ? path : `/${path}`;
+    return `${baseUrl}${route}`;
+  }
 
   private buildHeaders(template: any): HttpHeaders {
     const headersObj: any = { ...template };
@@ -46,7 +54,7 @@ export class DataService {
     const payload = JSON.parse(loginRequestParameters);
     payload.totp = payload.totp?.replace('totp#', totp) || totp;
     const headers = this.buildHeaders(loginRequestHeaders);
-    return this.http.post<any>('/api/login', payload, { headers });
+    return this.http.post<any>(this.buildUrl('/login'), payload, { headers });
   }
 
   getToken() {
@@ -55,12 +63,12 @@ export class DataService {
     const payload = JSON.parse(getTokenRequestParameters);
     payload.refreshToken = this.RefreshToken ?? String(localStorage.getItem('refreshToken')) ?? payload.refreshToken;
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.post<any>('/api/generateTokens', payload, { headers });
+    return this.http.post<any>(this.buildUrl('/generateTokens'), payload, { headers });
   }
 
   getProfile() {
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.get<any>('/api/getProfile', { headers });
+    return this.http.get<any>(this.buildUrl('/getProfile'), { headers });
   }
 
   getStockDetails(exchange: any, token: any, tradingsymbol: any) {
@@ -76,14 +84,14 @@ export class DataService {
     // };
     const payload = { exchange, tradingsymbol, symboltoken: token };
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.post<any>('/api/getLtpData', payload, { headers });
+    return this.http.post<any>(this.buildUrl('/getLtpData'), payload, { headers });
   }
 
   getStockDetailsByMode(mode: any, exchange: any, token: any, name: any) {
     const payload: any = { mode, exchangeTokens: {} };
     payload.exchangeTokens[exchange] = [token];
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.post<any>('/api/quote', payload, { headers });
+    return this.http.post<any>(this.buildUrl('/quote'), payload, { headers });
   }
 
   getHistoricalStockDetails(
@@ -95,7 +103,7 @@ export class DataService {
   ) {
     const payload = { exchange, symboltoken: token, interval, fromdate: fromDate, todate: toDate };
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.post<any>('/api/getCandleData', payload, { headers });
+    return this.http.post<any>(this.buildUrl('/getCandleData'), payload, { headers });
   }
 
   getCategoriesList() {
@@ -104,12 +112,12 @@ export class DataService {
   }
 
     getSavedStocks(): Observable<any> {
-    return this.http.get('/api/fileapi');
+    return this.http.get(this.buildUrl('/fileapi'));
   }
 
   saveToFile(data: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post('/api/fileapi', 
+    return this.http.post(this.buildUrl('/fileapi'), 
       data, { headers });
   }
 
@@ -170,7 +178,7 @@ export class DataService {
 
     const payload = { exchange, tradingsymbol: symbol, symboltoken: token };
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.post<any>('/api/getLtpData', payload, { headers });
+    return this.http.post<any>(this.buildUrl('/getLtpData'), payload, { headers });
   }
 
   // Replaces smartApi.placeOrder
@@ -181,7 +189,7 @@ export class DataService {
     // return this.http.post<any>(`${this.apiUrl}ltp`, payload);
 
     const headers = this.buildHeaders(requestHeaders);
-    return this.http.post<any>('/api/placeorder', order, { headers });
+    return this.http.post<any>(this.buildUrl('/placeorder'), order, { headers });
 
   }
 

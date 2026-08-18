@@ -1,5 +1,6 @@
 export const environment = {
-  production: false
+  production: false,
+  apiBaseUrl: 'http://localhost:3000/'
 };
 
 export const requestHeaders = {
